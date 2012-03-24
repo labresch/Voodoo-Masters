@@ -1,5 +1,6 @@
 import java.sql.Date;
 
+/* this is just a simple class to get us going, maybe we should be able to add new fields somehow */
 
 public class Paper {
    
