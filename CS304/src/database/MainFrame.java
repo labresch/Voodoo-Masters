@@ -16,6 +16,9 @@ import javax.swing.JButton;
 import java.awt.Component;
 import javax.swing.Box;
 import javax.swing.JLabel;
+
+import database.Login.UserStatus;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -27,8 +30,11 @@ public class MainFrame extends JFrame {
 	private JPanel mainPanel, infopanel;
 	private final JToolBar mainToolBar = new JToolBar();
 	private PaperSearch ps;
-	private JComponent psBox; 
+	private Login lg;
+	private JComponent psBox, lgBox; 
 	private JLabel statusbar;
+	private UserStatus uStatus = UserStatus.NONSUBSCRIBER;
+	private JButton tb_login = new JButton("Login");
 	
 	/**
 	 * Launch the application.
@@ -62,6 +68,9 @@ public class MainFrame extends JFrame {
 		ps = new PaperSearch();
 		psBox = ps.getComponent();
 		
+		lg = new Login(this);
+		lgBox = lg.getComponent();
+		
 		// Create the tool bar
 		mainToolBar.setAlignmentX(Component.LEFT_ALIGNMENT);
 		// set up tool bar buttons
@@ -76,12 +85,25 @@ public class MainFrame extends JFrame {
 		JButton tb_journals = new JButton("Search Journals");
 		JButton tb_publishers = new JButton("Search Publishers");
 		JButton tb_sign_up = new JButton("Sign Up!");
+		
+		tb_login.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae) {
+				if (uStatus.equals(UserStatus.NONSUBSCRIBER)) {
+				CardLayout cl = (CardLayout) infopanel.getLayout();
+				cl.show(infopanel, "Login");
+				}
+				else {
+					logout();
+				}
+			}
+		});
 		mainToolBar.add(tb_quit);
 		mainToolBar.add(tb_papers);
 		mainToolBar.add(tb_journals);
 		mainToolBar.add(tb_publishers);
 		mainToolBar.add(Box.createHorizontalGlue());
 		mainToolBar.add(tb_sign_up);
+		mainToolBar.add(tb_login);
 		mainPanel.add(mainToolBar, BorderLayout.NORTH);
 		
 		statusbar = new JLabel("Status OK");
@@ -97,6 +119,7 @@ public class MainFrame extends JFrame {
 		infopanel.setLayout(new CardLayout(0, 0));
 		infopanel.add(welcome, "Welcome");
 		infopanel.add(psBox, "Paper");
+		infopanel.add(lgBox, "Login");
 	}
 	
 	/**
@@ -116,5 +139,28 @@ public class MainFrame extends JFrame {
 
 		setJMenuBar(menuBar);
 	}	
-	
+	public void updateUserStatus(UserStatus us){
+		uStatus = us;
+		if (us.equals(UserStatus.ADMIN)) {
+			statusbar.setText("Status OK: Signed in as Admin");
+			tb_login.setText("Logout");
+		}
+		if (us.equals(UserStatus.PUBLISHER)) {
+			statusbar.setText("Status OK: Signed in as Publisher");
+			tb_login.setText("Logout");
+		}
+		if (us.equals(UserStatus.SUBSCRIBER)) {
+			statusbar.setText("Status OK: Signed in as Subscriber");
+			tb_login.setText("Logout");
+		}
+		if (us.equals(UserStatus.NONSUBSCRIBER)) {
+			statusbar.setText("Status OK");
+			tb_login.setText("Login");
+		}
+	}
+	private void logout() {
+		uStatus = UserStatus.NONSUBSCRIBER;
+		statusbar.setText("Status OK");
+		tb_login.setText("Login");
+	}
 }
