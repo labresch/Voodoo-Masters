@@ -1,6 +1,8 @@
 package database;
 
 import java.awt.Dimension;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
@@ -23,11 +25,10 @@ public class SearchField extends JPanel{
 	public SearchField(boolean showBooleans){
 		setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
 		
-		if (showBooleans){
 			booleanBox = new JComboBox(booleans);
 			booleanBox.setSelectedIndex(0);
-			add(booleanBox);
-			
+		if (showBooleans){
+			add(booleanBox);	
 		}
 		else{
 			add(new JLabel("Enter Keywords:"));
@@ -54,8 +55,25 @@ public class SearchField extends JPanel{
 	 * Get the String contents of the SearchField
 	 * @return the contents of the SearchField as a String 
 	 */
-	public String getContents(){
-		return "";
+	public List<String> getContents(){
+		List<String> contents = new ArrayList<String>();
+		if ( keyword.getText().equals("")){
+			return contents;
+		}
+		
+		if ( subtopicBox.getSelectedIndex() == 0){
+			for(int i = 1; i < subtopics.length; i++){
+				contents.add("OR");
+				contents.add(subtopics[i]);
+				contents.add(keyword.getText());
+			}
+		}
+		else{
+			contents.add((String) booleanBox.getSelectedItem());
+			contents.add((String) subtopicBox.getSelectedItem());
+			contents.add(keyword.getText());
+		}
+		return contents;
 	}
 
 }

@@ -2,15 +2,26 @@ package database;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 public class ResultsDisplay {
 	private static ArrayList<ArrayList<String>> papers;
-
+	private List<JPanel> paperpanel;
+	private List<JButton> paperbutton;
+	
 	public ResultsDisplay(int k){
 		papers = new ArrayList<ArrayList<String>>();
 		for (int i=k; i < 30; i++) {
@@ -21,13 +32,42 @@ public class ResultsDisplay {
 			paper.add("PaperID: " + i);
 			papers.add(paper);
 		}
-
+		paperpanel = new ArrayList<JPanel>();
+		paperbutton = new ArrayList<JButton>();
 	}
 
 	public JComponent getGUI() {
-
+		JPanel mainp = new JPanel();
+		mainp.setLayout(new BoxLayout(mainp, BoxLayout.Y_AXIS));
 		
-		JTextArea textArea = new JTextArea();
+		for (int i = 0; i < papers.size(); i++){
+			JPanel p = new JPanel();
+			p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
+			
+			for (int j=0; j < papers.get(i).size(); j++){
+				JPanel tpanel = new JPanel();
+				tpanel.setLayout(new BoxLayout(tpanel, BoxLayout.X_AXIS));
+				tpanel.add(new JLabel(papers.get(i).get(j)));
+				tpanel.add(Box.createHorizontalGlue());
+				p.add(tpanel);
+			}
+			JButton doButton = new JButton("View Paper Information");
+			paperbutton.add(doButton);
+			doButton.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent ae) {
+					int index = paperbutton.indexOf((JButton) ae.getSource());
+					
+				}
+				
+			});
+			
+			p.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(),BorderFactory.createEmptyBorder(5,5,5,5)));
+			mainp.add(p);
+			
+		}
+		JScrollPane scrollPane = new JScrollPane(mainp);
+		return scrollPane;
+/*		JTextArea textArea = new JTextArea();
 
 
 		for (int i = 0; i < papers.size(); i++) {
@@ -49,7 +89,7 @@ public class ResultsDisplay {
 
 		//jframe.setLocationRelativeTo(null);
 
-		//jframe.setVisible(true);
+		//jframe.setVisible(true);*/
 	}
 }
 
