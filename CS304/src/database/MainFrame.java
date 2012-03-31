@@ -18,6 +18,7 @@ import java.awt.Component;
 import javax.swing.Box;
 import javax.swing.JLabel;
 
+import tabviews.AdminModify;
 import tabviews.AuthorSearch;
 import tabviews.Login;
 import tabviews.MostPublished;
@@ -42,7 +43,7 @@ public class MainFrame extends JFrame {
 	private final JToolBar mainToolBar = new JToolBar();
 	private JLabel statusbar;
 	private UserStatus uStatus = UserStatus.NONSUBSCRIBER;
-	private JButton tb_papersearch, tb_login, tb_logout, tb_subscriptions, tb_signup, tb_paperrequest, tb_mostpub;
+	private JButton tb_papersearch, tb_login, tb_logout, tb_subscriptions, tb_signup, tb_paperrequest, tb_mostpub, tb_adminmod;
 	
 	public static project p;
 	
@@ -92,19 +93,7 @@ public class MainFrame extends JFrame {
 		});
 		JButton tb_journals = new JButton("Search Journals");
 		JButton tb_publishers = new JButton("Search Publishers");
-/*
-		tb_login.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent ae) {
-				if (uStatus.equals(UserStatus.NONSUBSCRIBER)) {
-				CardLayout cl = (CardLayout) infopanel.getLayout();
-				cl.show(infopanel, "Login");
-				}
-				else {
-					logout();
-				}
-			}
-		});
-		*/
+		
 		infopanel = new JPanel();
 		mainPanel.add(infopanel, BorderLayout.CENTER);
 		infopanel.setLayout(new CardLayout(0, 0));
@@ -117,6 +106,7 @@ public class MainFrame extends JFrame {
 		tb_subscriptions = addTab(new Subscriptions(), "Subscriptions", false);
 		tb_paperrequest = addTab(new PaperRequest(), "Request", false);
 		tb_mostpub = addTab(new MostPublished(), "Most Published", false);
+		tb_adminmod = addTab(new AdminModify(), "Modify", false);
 		mainToolBar.add(Box.createHorizontalGlue());
 		tb_signup = addTab(new SignUp(), "Sign Up!", true);
 		tb_login = addTab(new Login(this), "Login", true);
@@ -190,6 +180,7 @@ public class MainFrame extends JFrame {
 		tb_mostpub.setVisible(false);
 		tb_logout.setVisible(true);
 		tb_login.setVisible(false);
+		tb_adminmod.setVisible(true);
 	}
 	private void publisherView() {
 		statusbar.setText("Status OK: Signed in as Publisher");
@@ -199,6 +190,7 @@ public class MainFrame extends JFrame {
 		tb_mostpub.setVisible(false);
 		tb_logout.setVisible(true);
 		tb_login.setVisible(false);
+		tb_adminmod.setVisible(false);
 	}
 	private void subscriberView() {
 		statusbar.setText("Status OK: Signed in as Subscriber");
@@ -208,6 +200,7 @@ public class MainFrame extends JFrame {
 		tb_mostpub.setVisible(true);
 		tb_logout.setVisible(true);
 		tb_login.setVisible(false);
+		tb_adminmod.setVisible(false);
 	}
 	private void generalView() {
 		statusbar.setText("Status OK");
@@ -217,6 +210,7 @@ public class MainFrame extends JFrame {
 		tb_mostpub.setVisible(false);
 		tb_logout.setVisible(false);
 		tb_login.setVisible(true);
+		tb_adminmod.setVisible(false);
 	}
 	
 	private JButton addTab(Tab tab, final String label, boolean visible) {
