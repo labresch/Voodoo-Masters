@@ -17,7 +17,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-public class AuthorSearch {
+public class AuthorSearch extends Tab{
 
 	private JSplitPane author_search;
 	private JTextField field_of_study, institution, name;

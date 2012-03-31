@@ -15,7 +15,7 @@ import javax.swing.JTextField;
 
 import apple.laf.CoreUIConstants.Orientation;
 
-public class Subscriptions {
+public class Subscriptions extends Tab{
 	
 	private JSplitPane mainPanel;
 	
@@ -35,7 +35,7 @@ public class Subscriptions {
 		JButton reqButton = new JButton("Subscribe");
 		reqButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae){
-				request();
+				subscribe();
 			}
 		});
 		reqPanel.add(reqButton);
@@ -55,7 +55,7 @@ public class Subscriptions {
 		return mainPanel;
 	}
 	
-	public void request() {
+	public void subscribe() {
 		/*oracle wizardry*/
 	}
 

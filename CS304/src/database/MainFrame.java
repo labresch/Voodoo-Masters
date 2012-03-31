@@ -30,16 +30,11 @@ public class MainFrame extends JFrame {
 
 	private JPanel mainPanel, infopanel;
 	private final JToolBar mainToolBar = new JToolBar();
-	private PaperSearch ps;
 	private Login lg;
-	private SignUp sign;
-	private Subscriptions subs;
-	private PaperRequest pq;
-	private JComponent psBox, lgBox, subsBox, asBox, signBox, pqBox; 
-	private AuthorSearch as;
+	private JComponent lgBox;
 	private JLabel statusbar;
 	private UserStatus uStatus = UserStatus.NONSUBSCRIBER;
-	private JButton tb_login, tb_subscriptions, tb_signup, tb_paperrequest;
+	private JButton tb_login, tb_subscriptions, tb_signup, tb_paperrequest, tb_mostpub;
 	
 	public static project p;
 	
@@ -72,23 +67,9 @@ public class MainFrame extends JFrame {
 		setContentPane(mainPanel);
 		mainPanel.setLayout(new BorderLayout(0, 0));
 		
-		ps = new PaperSearch();
-		psBox = ps.getComponent();
 		
 		lg = new Login(this);
 		lgBox = lg.getComponent();
-		
-		sign = new SignUp();
-		signBox = sign.getComponent();
-		
-		subs = new Subscriptions();
-		subsBox = subs.getComponent();
-		
-		as = new AuthorSearch();
-		asBox = as.getComponent();
-		
-		pq = new PaperRequest();
-		pqBox = pq.getComponent();
 	
 		p = new project();
 		//p.makeConnection();
@@ -105,30 +86,8 @@ public class MainFrame extends JFrame {
 				}	  
 			}
 		});
-		JButton tb_papers = new JButton("Search Papers");
-		tb_papers.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent ae) {
-				CardLayout cl = (CardLayout) infopanel.getLayout();
-				cl.show(infopanel, "Paper");
-			}
-		});
 		JButton tb_journals = new JButton("Search Journals");
 		JButton tb_publishers = new JButton("Search Publishers");
-		JButton tb_authors = new JButton("Browse Authors");
-		tb_authors.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent ae){
-				CardLayout cl = (CardLayout) infopanel.getLayout();
-				cl.show(infopanel, "Author");
-			}
-		});
-		tb_subscriptions = new JButton("Subscriptions");
-		tb_subscriptions.setVisible(false);
-		tb_subscriptions.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent ae) {
-				CardLayout cl = (CardLayout) infopanel.getLayout();
-				cl.show(infopanel, "Subscriptions");
-			}
-		});
 		tb_login = new JButton("Login");
 		tb_login.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae) {
@@ -141,30 +100,20 @@ public class MainFrame extends JFrame {
 				}
 			}
 		});
-		tb_signup = new JButton("Sign Up!");
-		tb_signup.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent ae) {
-				CardLayout cl = (CardLayout) infopanel.getLayout();
-				cl.show(infopanel, "SignUp");
-			}
-		});
-		tb_paperrequest = new JButton("Request");
-		tb_paperrequest.setVisible(false);
-		tb_paperrequest.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent ae) {
-				CardLayout cl = (CardLayout) infopanel.getLayout();
-				cl.show(infopanel, "Request");
-			}
-		});
+		infopanel = new JPanel();
+		mainPanel.add(infopanel, BorderLayout.CENTER);
+		infopanel.setLayout(new CardLayout(0, 0));
+		
 		mainToolBar.add(tb_quit);
-		mainToolBar.add(tb_papers);
+		addTab(new PaperSearch(), "Search Papers", new JButton(), true);
 		mainToolBar.add(tb_journals);
 		mainToolBar.add(tb_publishers);
-		mainToolBar.add(tb_authors);
-		mainToolBar.add(tb_subscriptions);
-		mainToolBar.add(tb_paperrequest);
+		addTab(new AuthorSearch(), "Browse Authors", new JButton(), true);
+		addTab(new Subscriptions(), "Subscriptions", tb_subscriptions, false);
+		addTab(new PaperRequest(), "Request", tb_paperrequest, false);
+		addTab(new MostPublished(), "Most Published", tb_mostpub, false);
 		mainToolBar.add(Box.createHorizontalGlue());
-		mainToolBar.add(tb_signup);
+		addTab(new SignUp(), "Sign Up!", new JButton(), true);
 		mainToolBar.add(tb_login);
 		mainPanel.add(mainToolBar, BorderLayout.NORTH);
 		
@@ -176,17 +125,9 @@ public class MainFrame extends JFrame {
 		JPanel welcome = new JPanel();
 		welcome.add(new JLabel("Welcome to the Database"));
 		
-		infopanel = new JPanel();
-		mainPanel.add(infopanel, BorderLayout.CENTER);
-		infopanel.setLayout(new CardLayout(0, 0));
 		
 	//	infopanel.add(welcome, "Welcome");
-		infopanel.add(psBox, "Paper");
 		infopanel.add(lgBox, "Login");
-		infopanel.add(subsBox, "Subscriptions");
-		infopanel.add(asBox, "Author");
-		infopanel.add(signBox, "SignUp");
-		infopanel.add(pqBox, "Request");
 	}
 	
 	/**
@@ -243,21 +184,57 @@ public class MainFrame extends JFrame {
 		tb_subscriptions.setVisible(false);
 		tb_signup.setVisible(false);
 		tb_paperrequest.setVisible(false);
+		tb_mostpub.setVisible(false);
 	}
 	private void publisherView() {
 		tb_subscriptions.setVisible(false);
 		tb_signup.setVisible(false);
 		tb_paperrequest.setVisible(false);
+		tb_mostpub.setVisible(false);
 	}
 	private void subscriberView() {
 		tb_subscriptions.setVisible(true);
 		tb_signup.setVisible(false);
 		tb_paperrequest.setVisible(true);
+		tb_mostpub.setVisible(true);
 	}
 	private void generalView() {
 		tb_subscriptions.setVisible(false);
 		tb_signup.setVisible(true);
 		tb_paperrequest.setVisible(false);
+		tb_mostpub.setVisible(false);
 	}
 	
+	private void addTab(Tab tab, final String label, JButton oldbutton, boolean visible) {
+		JComponent box = tab.getComponent();
+		JButton button = new JButton(label);
+		button.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae) {
+				CardLayout cl = (CardLayout) infopanel.getLayout();
+				cl.show(infopanel, label);
+			}
+		});
+		button.setVisible(visible);
+		mainToolBar.add(button);
+		infopanel.add(box, label);
+		setButton(oldbutton, button);
+	}
+	
+	private void setButton(JButton oldbutton, JButton newbutton) {
+		if (oldbutton == tb_login) {
+			tb_login = newbutton;
+		}
+		else if (oldbutton == tb_subscriptions) {
+			tb_subscriptions = newbutton;
+		}
+		else if (oldbutton == tb_signup) {
+			tb_signup = newbutton;
+		}
+		else if (oldbutton == tb_paperrequest) {
+			tb_paperrequest = newbutton;
+		}
+		else if (oldbutton == tb_mostpub) {
+			tb_mostpub = newbutton;
+		}
+	}
 }

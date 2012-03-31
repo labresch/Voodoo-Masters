@@ -15,7 +15,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 
-public class Login {
+public class Login extends Tab{
 	private JPanel mainPanel;
 	private JPanel login;
 	private JPanel uName;
@@ -83,7 +83,6 @@ public class Login {
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 		login.setAlignmentX(Component.CENTER_ALIGNMENT);
-		login.setAlignmentY(Component.CENTER_ALIGNMENT);
 		mainPanel.add(login);
 		
 	}

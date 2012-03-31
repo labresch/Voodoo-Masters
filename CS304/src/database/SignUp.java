@@ -14,7 +14,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 
-class SignUp {
+class SignUp extends Tab{
 
 	private JPanel mainPanel;
 	private JPanel signup;

@@ -13,7 +13,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 
-public class PaperRequest {
+public class PaperRequest extends Tab{
 private JPanel mainPanel;
 private int tBoxSize = 300;
 	
