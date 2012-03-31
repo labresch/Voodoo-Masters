@@ -47,7 +47,7 @@ public class PaperSearch {
 		search_papers = new JButton("Search");
 		search_papers.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae){
-				setResults();
+				getResults();
 			}
 		});
 		
@@ -76,9 +76,11 @@ public class PaperSearch {
 		advancedsearch.add(as1);
 		advancedsearch.add(Box.createVerticalGlue());
 		
-		JPanel search_results = new JPanel();
-		search_results.setLayout(new BoxLayout(search_results, BoxLayout.X_AXIS));
-		paper_search.setRightComponent(new JLabel(""));
+	//	paper_search.setRightComponent(new JLabel(""));
+	ResultsDisplay rd = new ResultsDisplay(advancedsearch.getComponentCount());
+		
+		paper_search.setRightComponent(rd.getGUI());
+	
 	}
 	
 	
@@ -147,18 +149,37 @@ public class PaperSearch {
 	/**
 	 * Takes the contents of the search fields and displays the results from the database.
 	 */
-	public void setResults(){
-		String result = "";
+	public void getResults(){
+		List<String> queries = new ArrayList<String>();
 		if (fields.isEmpty()){ // no advanced search
-			
+			queries.add("OR");
+			queries.add("Title");
+			queries.add(paper_keyword.getText());
+			queries.add("OR");
+			queries.add("Topic");
+			queries.add(paper_keyword.getText());
+			queries.add("OR");
+			queries.add("Author");
+			queries.add(paper_keyword.getText());
+			queries.add("OR");
+			queries.add("Journal");
+			queries.add(paper_keyword.getText());
+			queries.add("OR");
+			queries.add("Publisher");
+			queries.add(paper_keyword.getText());			
 		}
 		else{ // advanced search
 			for( SearchField sf : fields){ 
-				result += sf.getContents();
+				queries.addAll(sf.getContents());
 			}
 			
 		}
+		//JTextArea test = new JTextArea();
+		//for ( String s : queries){
+			//test.insert(s + " ", test.getCaretPosition());
+		//}
 		ResultsDisplay rd = new ResultsDisplay(advancedsearch.getComponentCount());
+		
 		paper_search.setRightComponent(rd.getGUI());
 	
 	}
