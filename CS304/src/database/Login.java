@@ -1,5 +1,6 @@
 package database;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,11 +11,13 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 
 public class Login {
-	private JSplitPane login;
+	private JPanel mainPanel;
+	private JPanel login;
 	private JPanel uName;
 	private JTextField uNameText;
 	private JPanel pass;
@@ -23,39 +26,41 @@ public class Login {
 	private JLabel loginFail;
 	private JLabel loginSuccess;
 	private MainFrame mFrame;
+	private int labelSize = 20;
+	private int textSize = 150;
 	
 	public Login(MainFrame mf) {
 		mFrame = mf;
-		
-		login = new JSplitPane();
-		login.setEnabled(false);
-		login.setOrientation(JSplitPane.VERTICAL_SPLIT);
+
+		login = new JPanel();
+		login.setLayout(new BoxLayout(login, BoxLayout.Y_AXIS));
 		
 		uName = new JPanel();
 		uName.setLayout(new BoxLayout(uName, BoxLayout.LINE_AXIS));
 		
 		uNameText = new JTextField();
-		uNameText.setColumns(5);
-		uNameText.setMaximumSize(new Dimension(Integer.MAX_VALUE,uNameText.getPreferredSize().height));
+		uNameText.setMaximumSize(new Dimension(textSize, uNameText.getPreferredSize().height));
 		loginFail = new JLabel("Failure");
 		loginFail.setVisible(false);
 		loginSuccess = new JLabel("Success");
 		loginSuccess.setVisible(false);
 		
-		uName.add(new JLabel("UserName:"));
+		JLabel uLabel = new JLabel("UserName:");
+		uLabel.setSize(labelSize, uLabel.getPreferredSize().height);
+		uName.add(uLabel);
 		uName.add(uNameText);
-		uName.add(loginFail);
-		uName.add(loginSuccess);
-		login.setLeftComponent(uName);
+		uName.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		login.add(uName);
 		
 		pass = new JPanel();
 		pass.setLayout(new BoxLayout(pass, BoxLayout.LINE_AXIS));
 		
-		passText = new JTextField();
-		passText.setColumns(5);
-		passText.setMaximumSize(new Dimension(Integer.MAX_VALUE,passText.getPreferredSize().height));
+		passText = new JPasswordField(10);
+		passText.setMaximumSize(new Dimension(textSize, passText.getPreferredSize().height));
 		
-		pass.add(new JLabel("Password:"));
+		JLabel passLabel = new JLabel("Password:");
+		passLabel.setSize(labelSize, passLabel.getPreferredSize().height);
+		pass.add(passLabel);
 		pass.add(passText);
 		
 		loginbutton = new JButton("Login");
@@ -64,8 +69,21 @@ public class Login {
 				checkLogin();
 			}
 		});
-		pass.add(loginbutton);
-		login.setRightComponent(pass);
+		pass.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		login.add(pass);
+		
+		JPanel lbPanel = new JPanel();
+		lbPanel.setLayout(new BoxLayout(lbPanel, BoxLayout.LINE_AXIS));
+		lbPanel.add(loginFail);
+		lbPanel.add(loginSuccess);
+		lbPanel.add(loginbutton);
+		lbPanel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		login.add(lbPanel);
+		
+		mainPanel = new JPanel();
+		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
+		mainPanel.add(login);
+		
 	}
 	enum UserStatus {
 		NONSUBSCRIBER,
@@ -74,8 +92,8 @@ public class Login {
 		ADMIN;
 	}
 
-	public JSplitPane getComponent() {
-		return login;
+	public JPanel getComponent() {
+		return mainPanel;
 	}
 	
 	private void checkLogin() {
@@ -88,16 +106,19 @@ public class Login {
 			mFrame.updateUserStatus(UserStatus.ADMIN);
 			loginSuccess.setVisible(true);
 			loginFail.setVisible(false);
+			mFrame.homeView();
 		}
 		else if (user.equals("publisher") && pword.equals("publisher")) {
 			mFrame.updateUserStatus(UserStatus.PUBLISHER);
 			loginSuccess.setVisible(true);
 			loginFail.setVisible(false);
+			mFrame.homeView();
 		}
 		else if (user.equals("subscriber") && pword.equals("subscriber")) {
 			mFrame.updateUserStatus(UserStatus.SUBSCRIBER);
 			loginSuccess.setVisible(true);
 			loginFail.setVisible(false);
+			mFrame.homeView();
 		}
 		else {
 			mFrame.updateUserStatus(UserStatus.NONSUBSCRIBER);

@@ -94,9 +94,9 @@ public class project{
     private void connect(){
     	// Load the Oracle JDBC driver
     	try{
-			DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-		}catch (SQLException ex){
-			System.out.println("Message: " + ex.getMessage());
+			//DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+		}catch (Exception e/*SQLException ex*/){
+			System.out.println("Message: " /*+ ex.getMessage()*/);
 		}
 
     	// connect to Oracle database

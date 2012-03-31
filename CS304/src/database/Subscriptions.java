@@ -26,13 +26,13 @@ public class Subscriptions {
 		JPanel reqPanel = new JPanel();
 		reqPanel.setLayout(new BoxLayout(reqPanel, BoxLayout.LINE_AXIS));
 		
-		reqPanel.add(new JLabel("Paper ID"));
+		reqPanel.add(new JLabel("Paper ID:"));
 		
 		JTextField reqBox = new JTextField();
 		reqBox.setMaximumSize(new Dimension(Integer.MAX_VALUE, reqBox.getPreferredSize().height));
 		reqPanel.add(reqBox);
 		
-		JButton reqButton = new JButton("Request");
+		JButton reqButton = new JButton("Subscribe");
 		reqButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae){
 				request();

@@ -36,7 +36,7 @@ public class ResultsDisplay {
 		paperbutton = new ArrayList<JButton>();
 	}
 
-	public JComponent getGUI() {
+	public JScrollPane getGUI() {
 		JPanel mainp = new JPanel();
 		mainp.setLayout(new BoxLayout(mainp, BoxLayout.Y_AXIS));
 		

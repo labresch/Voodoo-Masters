@@ -31,16 +31,15 @@ public class MainFrame extends JFrame {
 	private JPanel mainPanel, infopanel;
 	private final JToolBar mainToolBar = new JToolBar();
 	private PaperSearch ps;
-<<<<<<< HEAD
 	private Login lg;
-	private JComponent psBox, lgBox; 
-=======
+	private SignUp sign;
+	private Subscriptions subs;
+	private JComponent psBox, lgBox, subsBox, asBox, signBox; 
 	private AuthorSearch as;
-	private JComponent psBox, asBox; 
->>>>>>> 082fa0a0e3c1f9a6d99a1025d29afce5cecf97e4
 	private JLabel statusbar;
 	private UserStatus uStatus = UserStatus.NONSUBSCRIBER;
 	private JButton tb_login = new JButton("Login");
+	private JButton tb_subscriptions, tb_signup;
 	
 	public static project p;
 	
@@ -76,16 +75,20 @@ public class MainFrame extends JFrame {
 		ps = new PaperSearch();
 		psBox = ps.getComponent();
 		
-<<<<<<< HEAD
 		lg = new Login(this);
 		lgBox = lg.getComponent();
-=======
+		
+		sign = new SignUp();
+		signBox = sign.getComponent();
+		
+		subs = new Subscriptions();
+		subsBox = subs.getComponent();
+		
 		as = new AuthorSearch();
 		asBox = as.getComponent();
 	
 		p = new project();
 		//p.makeConnection();
->>>>>>> 082fa0a0e3c1f9a6d99a1025d29afce5cecf97e4
 		
 		// Create the tool bar
 		mainToolBar.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -115,7 +118,14 @@ public class MainFrame extends JFrame {
 				cl.show(infopanel, "Author");
 			}
 		});
-		JButton tb_sign_up = new JButton("Sign Up!");
+		tb_subscriptions = new JButton("Subscriptions");
+		tb_subscriptions.setVisible(false);
+		tb_subscriptions.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae) {
+				CardLayout cl = (CardLayout) infopanel.getLayout();
+				cl.show(infopanel, "Subscriptions");
+			}
+		});
 		
 		tb_login.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae) {
@@ -128,13 +138,21 @@ public class MainFrame extends JFrame {
 				}
 			}
 		});
+		tb_signup = new JButton("Sign Up!");
+		tb_signup.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae) {
+				CardLayout cl = (CardLayout) infopanel.getLayout();
+				cl.show(infopanel, "SignUp");
+			}
+		});
 		mainToolBar.add(tb_quit);
 		mainToolBar.add(tb_papers);
 		mainToolBar.add(tb_journals);
 		mainToolBar.add(tb_publishers);
 		mainToolBar.add(tb_authors);
+		mainToolBar.add(tb_subscriptions);
 		mainToolBar.add(Box.createHorizontalGlue());
-		mainToolBar.add(tb_sign_up);
+		mainToolBar.add(tb_signup);
 		mainToolBar.add(tb_login);
 		mainPanel.add(mainToolBar, BorderLayout.NORTH);
 		
@@ -152,11 +170,10 @@ public class MainFrame extends JFrame {
 		
 	//	infopanel.add(welcome, "Welcome");
 		infopanel.add(psBox, "Paper");
-<<<<<<< HEAD
 		infopanel.add(lgBox, "Login");
-=======
+		infopanel.add(subsBox, "Subscriptions");
 		infopanel.add(asBox, "Author");
->>>>>>> 082fa0a0e3c1f9a6d99a1025d29afce5cecf97e4
+		infopanel.add(signBox, "SignUp");
 	}
 	
 	/**
@@ -179,25 +196,51 @@ public class MainFrame extends JFrame {
 	public void updateUserStatus(UserStatus us){
 		uStatus = us;
 		if (us.equals(UserStatus.ADMIN)) {
+			adminView();
 			statusbar.setText("Status OK: Signed in as Admin");
 			tb_login.setText("Logout");
 		}
 		if (us.equals(UserStatus.PUBLISHER)) {
+			publisherView();
 			statusbar.setText("Status OK: Signed in as Publisher");
 			tb_login.setText("Logout");
 		}
 		if (us.equals(UserStatus.SUBSCRIBER)) {
+			subscriberView();
 			statusbar.setText("Status OK: Signed in as Subscriber");
 			tb_login.setText("Logout");
 		}
 		if (us.equals(UserStatus.NONSUBSCRIBER)) {
+			generalView();
 			statusbar.setText("Status OK");
 			tb_login.setText("Login");
 		}
 	}
 	private void logout() {
-		uStatus = UserStatus.NONSUBSCRIBER;
-		statusbar.setText("Status OK");
-		tb_login.setText("Login");
+		updateUserStatus(UserStatus.NONSUBSCRIBER);
+		homeView();
 	}
+
+	public void homeView() {
+		CardLayout cl = (CardLayout) infopanel.getLayout();
+		cl.show(infopanel, "Paper");
+	}
+	
+	private void adminView() {
+		tb_subscriptions.setVisible(false);
+		tb_signup.setVisible(false);
+	}
+	private void publisherView() {
+		tb_subscriptions.setVisible(false);
+		tb_signup.setVisible(false);
+	}
+	private void subscriberView() {
+		tb_subscriptions.setVisible(true);
+		tb_signup.setVisible(false);
+	}
+	private void generalView() {
+		tb_subscriptions.setVisible(false);
+		tb_signup.setVisible(true);
+	}
+	
 }

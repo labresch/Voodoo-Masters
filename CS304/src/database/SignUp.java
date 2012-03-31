@@ -31,9 +31,7 @@ class SignUp {
 	public SignUp() {
 		
 		signup = new JPanel();
-		signup.setEnabled(false);
 		signup.setLayout(new BoxLayout(signup, BoxLayout.Y_AXIS));
-		signup.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		
 		uName = new JPanel();
 		uName.setLayout(new BoxLayout(uName, BoxLayout.LINE_AXIS));
