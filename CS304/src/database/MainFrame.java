@@ -18,7 +18,17 @@ import java.awt.Component;
 import javax.swing.Box;
 import javax.swing.JLabel;
 
-import database.Login.UserStatus;
+import tabviews.AuthorSearch;
+import tabviews.Login;
+import tabviews.MostPublished;
+import tabviews.PaperRequest;
+import tabviews.PaperSearch;
+import tabviews.SignUp;
+import tabviews.Subscriptions;
+import tabviews.Tab;
+import tabviews.Login.UserStatus;
+
+
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -30,11 +40,9 @@ public class MainFrame extends JFrame {
 
 	private JPanel mainPanel, infopanel;
 	private final JToolBar mainToolBar = new JToolBar();
-	private Login lg;
-	private JComponent lgBox;
 	private JLabel statusbar;
 	private UserStatus uStatus = UserStatus.NONSUBSCRIBER;
-	private JButton tb_login, tb_subscriptions, tb_signup, tb_paperrequest, tb_mostpub;
+	private JButton tb_papersearch, tb_login, tb_logout, tb_subscriptions, tb_signup, tb_paperrequest, tb_mostpub;
 	
 	public static project p;
 	
@@ -66,10 +74,6 @@ public class MainFrame extends JFrame {
 		mainPanel = new JPanel();
 		setContentPane(mainPanel);
 		mainPanel.setLayout(new BorderLayout(0, 0));
-		
-		
-		lg = new Login(this);
-		lgBox = lg.getComponent();
 	
 		p = new project();
 		//p.makeConnection();
@@ -88,7 +92,7 @@ public class MainFrame extends JFrame {
 		});
 		JButton tb_journals = new JButton("Search Journals");
 		JButton tb_publishers = new JButton("Search Publishers");
-		tb_login = new JButton("Login");
+/*
 		tb_login.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae) {
 				if (uStatus.equals(UserStatus.NONSUBSCRIBER)) {
@@ -100,21 +104,28 @@ public class MainFrame extends JFrame {
 				}
 			}
 		});
+		*/
 		infopanel = new JPanel();
 		mainPanel.add(infopanel, BorderLayout.CENTER);
 		infopanel.setLayout(new CardLayout(0, 0));
 		
 		mainToolBar.add(tb_quit);
-		addTab(new PaperSearch(), "Search Papers", new JButton(), true);
+		tb_papersearch = addTab(new PaperSearch(), "Search Papers", true);
 		mainToolBar.add(tb_journals);
 		mainToolBar.add(tb_publishers);
-		addTab(new AuthorSearch(), "Browse Authors", new JButton(), true);
-		addTab(new Subscriptions(), "Subscriptions", tb_subscriptions, false);
-		addTab(new PaperRequest(), "Request", tb_paperrequest, false);
-		addTab(new MostPublished(), "Most Published", tb_mostpub, false);
+		addTab(new AuthorSearch(), "Browse Authors", true);
+		tb_subscriptions = addTab(new Subscriptions(), "Subscriptions", false);
+		tb_paperrequest = addTab(new PaperRequest(), "Request", false);
+		tb_mostpub = addTab(new MostPublished(), "Most Published", false);
 		mainToolBar.add(Box.createHorizontalGlue());
-		addTab(new SignUp(), "Sign Up!", new JButton(), true);
-		mainToolBar.add(tb_login);
+		tb_signup = addTab(new SignUp(), "Sign Up!", true);
+		tb_login = addTab(new Login(this), "Login", true);
+		tb_logout = addTab(new Login(this), "Logout", false);
+		tb_logout.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae) {
+				logout();
+			}
+		});
 		mainPanel.add(mainToolBar, BorderLayout.NORTH);
 		
 		statusbar = new JLabel("Status OK");
@@ -127,7 +138,6 @@ public class MainFrame extends JFrame {
 		
 		
 	//	infopanel.add(welcome, "Welcome");
-		infopanel.add(lgBox, "Login");
 	}
 	
 	/**
@@ -149,25 +159,18 @@ public class MainFrame extends JFrame {
 	}	
 	public void updateUserStatus(UserStatus us){
 		uStatus = us;
-		if (us.equals(UserStatus.ADMIN)) {
+		if (uStatus.equals(UserStatus.ADMIN)) {
 			adminView();
-			statusbar.setText("Status OK: Signed in as Admin");
-			tb_login.setText("Logout");
+
 		}
-		if (us.equals(UserStatus.PUBLISHER)) {
+		if (uStatus.equals(UserStatus.PUBLISHER)) {
 			publisherView();
-			statusbar.setText("Status OK: Signed in as Publisher");
-			tb_login.setText("Logout");
 		}
-		if (us.equals(UserStatus.SUBSCRIBER)) {
+		if (uStatus.equals(UserStatus.SUBSCRIBER)) {
 			subscriberView();
-			statusbar.setText("Status OK: Signed in as Subscriber");
-			tb_login.setText("Logout");
 		}
-		if (us.equals(UserStatus.NONSUBSCRIBER)) {
+		if (uStatus.equals(UserStatus.NONSUBSCRIBER)) {
 			generalView();
-			statusbar.setText("Status OK");
-			tb_login.setText("Login");
 		}
 	}
 	private void logout() {
@@ -176,36 +179,47 @@ public class MainFrame extends JFrame {
 	}
 
 	public void homeView() {
-		CardLayout cl = (CardLayout) infopanel.getLayout();
-		cl.show(infopanel, "Paper");
+		tb_papersearch.doClick();
 	}
 	
 	private void adminView() {
+		statusbar.setText("Status OK: Signed in as Admin");
 		tb_subscriptions.setVisible(false);
 		tb_signup.setVisible(false);
 		tb_paperrequest.setVisible(false);
 		tb_mostpub.setVisible(false);
+		tb_logout.setVisible(true);
+		tb_login.setVisible(false);
 	}
 	private void publisherView() {
+		statusbar.setText("Status OK: Signed in as Publisher");
 		tb_subscriptions.setVisible(false);
 		tb_signup.setVisible(false);
 		tb_paperrequest.setVisible(false);
 		tb_mostpub.setVisible(false);
+		tb_logout.setVisible(true);
+		tb_login.setVisible(false);
 	}
 	private void subscriberView() {
+		statusbar.setText("Status OK: Signed in as Subscriber");
 		tb_subscriptions.setVisible(true);
 		tb_signup.setVisible(false);
 		tb_paperrequest.setVisible(true);
 		tb_mostpub.setVisible(true);
+		tb_logout.setVisible(true);
+		tb_login.setVisible(false);
 	}
 	private void generalView() {
+		statusbar.setText("Status OK");
 		tb_subscriptions.setVisible(false);
 		tb_signup.setVisible(true);
 		tb_paperrequest.setVisible(false);
 		tb_mostpub.setVisible(false);
+		tb_logout.setVisible(false);
+		tb_login.setVisible(true);
 	}
 	
-	private void addTab(Tab tab, final String label, JButton oldbutton, boolean visible) {
+	private JButton addTab(Tab tab, final String label, boolean visible) {
 		JComponent box = tab.getComponent();
 		JButton button = new JButton(label);
 		button.addActionListener(new ActionListener(){
@@ -217,24 +231,6 @@ public class MainFrame extends JFrame {
 		button.setVisible(visible);
 		mainToolBar.add(button);
 		infopanel.add(box, label);
-		setButton(oldbutton, button);
-	}
-	
-	private void setButton(JButton oldbutton, JButton newbutton) {
-		if (oldbutton == tb_login) {
-			tb_login = newbutton;
-		}
-		else if (oldbutton == tb_subscriptions) {
-			tb_subscriptions = newbutton;
-		}
-		else if (oldbutton == tb_signup) {
-			tb_signup = newbutton;
-		}
-		else if (oldbutton == tb_paperrequest) {
-			tb_paperrequest = newbutton;
-		}
-		else if (oldbutton == tb_mostpub) {
-			tb_mostpub = newbutton;
-		}
+		return button;
 	}
 }
