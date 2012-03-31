@@ -1,4 +1,4 @@
-package database;
+package tabviews;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -11,8 +11,12 @@ import java.util.List;
 
 import javax.swing.*;
 
+import database.ResultsDisplay;
+import database.SearchField;
 
-public class PaperSearch {
+
+
+public class PaperSearch extends Tab{
 	private JSplitPane paper_search;
 	private JPanel advancedsearch, keyword_panel, as1;
 	private JTextField paper_keyword, date1, date2;
@@ -152,21 +156,22 @@ public class PaperSearch {
 	public void getResults(){
 		List<String> queries = new ArrayList<String>();
 		if (fields.isEmpty()){ // no advanced search
+			String text = paper_keyword.getText();
 			queries.add("OR");
 			queries.add("Title");
-			queries.add(paper_keyword.getText());
+			queries.add(text);
 			queries.add("OR");
 			queries.add("Topic");
-			queries.add(paper_keyword.getText());
+			queries.add(text);
 			queries.add("OR");
 			queries.add("Author");
-			queries.add(paper_keyword.getText());
+			queries.add(text);
 			queries.add("OR");
 			queries.add("Journal");
-			queries.add(paper_keyword.getText());
+			queries.add(text);
 			queries.add("OR");
 			queries.add("Publisher");
-			queries.add(paper_keyword.getText());			
+			queries.add(text);
 		}
 		else{ // advanced search
 			for( SearchField sf : fields){ 

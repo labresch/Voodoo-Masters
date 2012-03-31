@@ -1,4 +1,4 @@
-package database;
+package tabviews;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -14,7 +14,9 @@ import javax.swing.JPasswordField;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 
-class SignUp extends Tab{
+
+
+public class SignUp extends Tab {
 
 	private JPanel mainPanel;
 	private JPanel signup;

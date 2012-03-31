@@ -1,9 +1,12 @@
-package database;
+package tabviews;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+
+import database.ResultsDisplay;
+
 
 public class MostPublished extends Tab{
 	

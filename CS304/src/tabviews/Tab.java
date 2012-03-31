@@ -1,4 +1,4 @@
-package database;
+package tabviews;
 
 import java.awt.Component;
 

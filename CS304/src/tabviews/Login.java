@@ -1,4 +1,4 @@
-package database;
+package tabviews;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -14,6 +14,9 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
+
+import database.MainFrame;
+
 
 public class Login extends Tab{
 	private JPanel mainPanel;
@@ -86,7 +89,7 @@ public class Login extends Tab{
 		mainPanel.add(login);
 		
 	}
-	enum UserStatus {
+	public enum UserStatus {
 		NONSUBSCRIBER,
 		SUBSCRIBER,
 		PUBLISHER,

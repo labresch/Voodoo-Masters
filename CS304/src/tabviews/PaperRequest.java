@@ -1,4 +1,4 @@
-package database;
+package tabviews;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
+
 
 public class PaperRequest extends Tab{
 private JPanel mainPanel;

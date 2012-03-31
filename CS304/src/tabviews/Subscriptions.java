@@ -1,4 +1,4 @@
-package database;
+package tabviews;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -12,6 +12,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
+
+import database.ResultsDisplay;
+
 
 import apple.laf.CoreUIConstants.Orientation;
 
