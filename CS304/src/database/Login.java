@@ -27,7 +27,7 @@ public class Login {
 	private JLabel loginSuccess;
 	private MainFrame mFrame;
 	private int labelSize = 20;
-	private int textSize = 150;
+	private int textSize = 300;
 	
 	public Login(MainFrame mf) {
 		mFrame = mf;
@@ -81,7 +81,9 @@ public class Login {
 		login.add(lbPanel);
 		
 		mainPanel = new JPanel();
-		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
+		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+		login.setAlignmentX(Component.CENTER_ALIGNMENT);
+		login.setAlignmentY(Component.CENTER_ALIGNMENT);
 		mainPanel.add(login);
 		
 	}

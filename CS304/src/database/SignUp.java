@@ -26,7 +26,7 @@ class SignUp {
 	private JLabel signupFail;
 	private JLabel signupSuccess;
 	private int labelSize = 20;
-	private int textSize = 150;
+	private int textSize = 300;
 	
 	public SignUp() {
 		
@@ -95,7 +95,8 @@ class SignUp {
 		signup.add(subPanel);
 		
 		mainPanel = new JPanel();
-		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
+		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+		signup.setAlignmentX(Component.CENTER_ALIGNMENT);
 		mainPanel.add(signup);
 	}
 	

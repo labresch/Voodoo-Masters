@@ -34,12 +34,12 @@ public class MainFrame extends JFrame {
 	private Login lg;
 	private SignUp sign;
 	private Subscriptions subs;
-	private JComponent psBox, lgBox, subsBox, asBox, signBox; 
+	private PaperRequest pq;
+	private JComponent psBox, lgBox, subsBox, asBox, signBox, pqBox; 
 	private AuthorSearch as;
 	private JLabel statusbar;
 	private UserStatus uStatus = UserStatus.NONSUBSCRIBER;
-	private JButton tb_login = new JButton("Login");
-	private JButton tb_subscriptions, tb_signup;
+	private JButton tb_login, tb_subscriptions, tb_signup, tb_paperrequest;
 	
 	public static project p;
 	
@@ -86,6 +86,9 @@ public class MainFrame extends JFrame {
 		
 		as = new AuthorSearch();
 		asBox = as.getComponent();
+		
+		pq = new PaperRequest();
+		pqBox = pq.getComponent();
 	
 		p = new project();
 		//p.makeConnection();
@@ -126,7 +129,7 @@ public class MainFrame extends JFrame {
 				cl.show(infopanel, "Subscriptions");
 			}
 		});
-		
+		tb_login = new JButton("Login");
 		tb_login.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae) {
 				if (uStatus.equals(UserStatus.NONSUBSCRIBER)) {
@@ -145,12 +148,21 @@ public class MainFrame extends JFrame {
 				cl.show(infopanel, "SignUp");
 			}
 		});
+		tb_paperrequest = new JButton("Request");
+		tb_paperrequest.setVisible(false);
+		tb_paperrequest.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae) {
+				CardLayout cl = (CardLayout) infopanel.getLayout();
+				cl.show(infopanel, "Request");
+			}
+		});
 		mainToolBar.add(tb_quit);
 		mainToolBar.add(tb_papers);
 		mainToolBar.add(tb_journals);
 		mainToolBar.add(tb_publishers);
 		mainToolBar.add(tb_authors);
 		mainToolBar.add(tb_subscriptions);
+		mainToolBar.add(tb_paperrequest);
 		mainToolBar.add(Box.createHorizontalGlue());
 		mainToolBar.add(tb_signup);
 		mainToolBar.add(tb_login);
@@ -174,6 +186,7 @@ public class MainFrame extends JFrame {
 		infopanel.add(subsBox, "Subscriptions");
 		infopanel.add(asBox, "Author");
 		infopanel.add(signBox, "SignUp");
+		infopanel.add(pqBox, "Request");
 	}
 	
 	/**
@@ -229,18 +242,22 @@ public class MainFrame extends JFrame {
 	private void adminView() {
 		tb_subscriptions.setVisible(false);
 		tb_signup.setVisible(false);
+		tb_paperrequest.setVisible(false);
 	}
 	private void publisherView() {
 		tb_subscriptions.setVisible(false);
 		tb_signup.setVisible(false);
+		tb_paperrequest.setVisible(false);
 	}
 	private void subscriberView() {
 		tb_subscriptions.setVisible(true);
 		tb_signup.setVisible(false);
+		tb_paperrequest.setVisible(true);
 	}
 	private void generalView() {
 		tb_subscriptions.setVisible(false);
 		tb_signup.setVisible(true);
+		tb_paperrequest.setVisible(false);
 	}
 	
 }
