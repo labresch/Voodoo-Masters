@@ -8,9 +8,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.swing.*;
 
+import database.MainFrame;
 import database.ResultsDisplay;
 import database.SearchField;
 
@@ -154,17 +156,49 @@ public class PaperSearch extends Tab{
 			queries.add(text);
 		}
 		else{
+			queries.add("papersearch");
 			for (SearchField sf : fields){
 				queries.addAll(sf.getContents());
 			}
+			queries.add("datepublished");
+			String temp = date1.getText();
+			if (Pattern.matches("\\d\\d\\d\\d/\\d\\d/\\d\\d", temp)){ // yyyy/mm/dd
+				
+			}
+			else if ( Pattern.matches("\\d\\d\\d\\d/\\d\\d", temp)){ // yyyy/mm
+				temp = temp + "/28";
+			}
+			else if ( Pattern.matches("\\d\\d\\d\\d", temp)){ // yyyy
+				temp = temp + "/12/31";
+			}
+			else{
+				MainFrame.showError("Date is in an invalid format.");
+				return;
+			}
+			queries.add(temp);
+			queries.add("datepublished");
+			temp = date2.getText();
+			if (Pattern.matches("\\d\\d\\d\\d/\\d\\d/\\d\\d", temp)){} // yyyy/mm/dd
+			else if ( Pattern.matches("\\d\\d\\d\\d/\\d\\d", temp)){ // yyyy/mm
+				temp = temp + "/01";
+			}
+			else if ( Pattern.matches("\\d\\d\\d\\d", temp)){ // yyyy
+				temp = temp + "/01/01";
+			}
+			else{
+				MainFrame.showError("Date is in an invalid format.");
+				return;
+			}
+			queries.add(temp);
 		}
-		//JTextArea test = new JTextArea();
-		//for ( String s : queries){
-			//test.insert(s + " ", test.getCaretPosition());
-		//}
-		ResultsDisplay rd = new ResultsDisplay(advancedsearch.getComponentCount());
+		JTextArea test = new JTextArea();
+		for ( String s : queries){
+			test.insert(s + " ", test.getCaretPosition());
+		}
+		paper_search.setRightComponent(test);
+		//ResultsDisplay rd = new ResultsDisplay(advancedsearch.getComponentCount());
 		
-		paper_search.setRightComponent(rd.getGUI());
+		//paper_search.setRightComponent(rd.getGUI());
 	
 	}
 	
