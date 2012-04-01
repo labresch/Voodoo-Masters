@@ -15,11 +15,13 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 
 public class ResultsDisplay {
 	private static ArrayList<ArrayList<String>> papers;
-	private List<JPanel> paperpanel;
+	private JSplitPane split;
+	//private List<JPanel> paperpanel;
 	private List<JButton> paperbutton;
 	
 	public ResultsDisplay(int k){
@@ -32,11 +34,12 @@ public class ResultsDisplay {
 			paper.add("PaperID: " + i);
 			papers.add(paper);
 		}
-		paperpanel = new ArrayList<JPanel>();
+		//paperpanel = new ArrayList<JPanel>();
 		paperbutton = new ArrayList<JButton>();
 	}
 
-	public JScrollPane getGUI() {
+	public JSplitPane getGUI() {
+		split = new JSplitPane();
 		JPanel mainp = new JPanel();
 		mainp.setLayout(new BoxLayout(mainp, BoxLayout.Y_AXIS));
 		
@@ -56,17 +59,25 @@ public class ResultsDisplay {
 			doButton.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent ae) {
 					int index = paperbutton.indexOf((JButton) ae.getSource());
-					
+					displaypaper(index);
 				}
 				
 			});
-			
+			JPanel buttonp = new JPanel();
+			buttonp.setLayout(new BoxLayout(buttonp, BoxLayout.X_AXIS));
+			buttonp.add(Box.createHorizontalGlue());
+			buttonp.add(doButton);
+			p.add(buttonp);
 			p.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(),BorderFactory.createEmptyBorder(5,5,5,5)));
 			mainp.add(p);
 			
 		}
 		JScrollPane scrollPane = new JScrollPane(mainp);
-		return scrollPane;
+		scrollPane.setMinimumSize(new Dimension(420,0));
+		split.setLeftComponent(scrollPane);
+		displaypaper(0);
+		
+		return split;
 /*		JTextArea textArea = new JTextArea();
 
 
@@ -90,6 +101,11 @@ public class ResultsDisplay {
 		//jframe.setLocationRelativeTo(null);
 
 		//jframe.setVisible(true);*/
+	}
+	
+	private void displaypaper(int index){
+		
+		split.setRightComponent(new PaperDisplay(papers.get(index)));
 	}
 }
 

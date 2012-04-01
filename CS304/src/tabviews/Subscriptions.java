@@ -45,7 +45,7 @@ public class Subscriptions extends Tab{
 		mainPanel.setLeftComponent(reqPanel);
 		
 		ResultsDisplay rd = new ResultsDisplay(0);
-		JScrollPane results = rd.getGUI();
+		JSplitPane results = rd.getGUI();
 		
 		JPanel subs = new JPanel();
 		subs.setLayout(new BoxLayout(subs, BoxLayout.Y_AXIS));

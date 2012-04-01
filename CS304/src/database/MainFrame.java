@@ -68,7 +68,7 @@ public class MainFrame extends JFrame {
 	 */
 	public MainFrame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 900, 640);
+		setBounds(80, 80, 1000, 700);
 	
 		set_up_menubar();
 		
@@ -125,7 +125,6 @@ public class MainFrame extends JFrame {
 		
 		JPanel welcome = new JPanel();
 		welcome.add(new JLabel("Welcome to the Database"));
-		
 		
 	//	infopanel.add(welcome, "Welcome");
 	}
@@ -226,5 +225,13 @@ public class MainFrame extends JFrame {
 		mainToolBar.add(button);
 		infopanel.add(box, label);
 		return button;
+	}
+	
+	public static void showError(String message){
+		JOptionPane.showMessageDialog(null,
+		    message,
+		    "Error",
+		    JOptionPane.ERROR_MESSAGE);
+
 	}
 }

@@ -93,31 +93,11 @@ public class PaperSearch extends Tab{
 	 */
 	private void set_up_advanced_search(){
 		
-		SearchField top = new SearchField(false); //first searchbox without AND OR NOT
-		top.setText(paper_keyword.getText()); // set text to original search box
-		fields.add(top);
-		SearchField first = new SearchField(true); //second searchbox with AND OR NOT
-		fields.add(first);
-		
-		advancedsearch.add(top, advancedsearch.getComponentCount()-1);
-		advancedsearch.add(first, advancedsearch.getComponentCount()-1);
-		
-		// Choice to add further search fields
-		JPanel addfield = new JPanel();
-		addfield.setLayout(new BoxLayout(addfield,BoxLayout.X_AXIS));
-		JButton addfield_button = new JButton("Add Search Field");
-		addfield_button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae){
-				SearchField newfield = new SearchField(true);
-				fields.add(newfield);
-				advancedsearch.add(newfield, fields.size()+1);;
-				paper_search.resetToPreferredSizes();
-			}
-		});
-		
-		addfield.add(addfield_button);
-		addfield.add(Box.createHorizontalGlue());
-		advancedsearch.add(addfield, advancedsearch.getComponentCount()-1);
+		for (int i = 0; i < SearchField.attNames.length; i++){
+			SearchField f = new SearchField(i);
+			fields.add(f);
+			advancedsearch.add(f, advancedsearch.getComponentCount()-1);
+		}
 		
 		DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
 		Calendar calendar = Calendar.getInstance();
@@ -173,11 +153,10 @@ public class PaperSearch extends Tab{
 			queries.add("Publisher");
 			queries.add(text);
 		}
-		else{ // advanced search
-			for( SearchField sf : fields){ 
+		else{
+			for (SearchField sf : fields){
 				queries.addAll(sf.getContents());
 			}
-			
 		}
 		//JTextArea test = new JTextArea();
 		//for ( String s : queries){
